@@ -1,5 +1,7 @@
 # CS3219 OTOT Task B4
 
+Deployed site: https://optimistic-torvalds-a90b90.netlify.app/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
