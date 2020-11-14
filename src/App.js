@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import QuoteTextField from './components/QuoteTextField';
+import Layout from './components/Layout';
+import QuoteList from './components/QuoteList';
 
 function App() {
+  const [quotes, setQuotes] = useState([]);
+
+  // TODO: Link up backend
+  useEffect(() => {
+    setQuotes([
+      {
+        id: 1,
+        content: 'Test',
+      },
+    ]);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <QuoteTextField
+        handleSubmit={(content) => console.log(`Add quote ${content}`)}
+        buttonText="Add"
+      />
+      <QuoteList
+        quotes={quotes}
+        editQuote={(id, newContent) =>
+          console.log(`Edit quote ${id} ${newContent}`)
+        }
+        deleteQuote={(id) => console.log(`Delete quote ${id}`)}
+      />
+    </Layout>
   );
 }
 
