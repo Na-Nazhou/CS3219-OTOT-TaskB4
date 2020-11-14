@@ -2,22 +2,22 @@ import React, { useState } from 'react';
 import { Paper, IconButton, Grid } from '@material-ui/core';
 import DeleteOutlined from '@material-ui/icons/DeleteOutlined';
 import EditOutlined from '@material-ui/icons/EditOutlined';
-import QuoteTextField from './QuoteTextField';
+import QuoteForm from './QuoteForm';
 
 const QuoteListItem = ({ content, handleDelete, handleEdit }) => {
   const [editMode, setEditMode] = useState(false);
 
   const onEdit = (newContent) => {
-    handleEdit(newContent);
-    setEditMode(false);
+    return handleEdit(newContent).then(() => setEditMode(false));
   };
 
   if (editMode) {
     return (
-      <QuoteTextField
+      <QuoteForm
         handleSubmit={onEdit}
         defaultContent={content}
-        buttonText="Edit"
+        isEditMode
+        handleCancel={() => setEditMode(false)}
       />
     );
   }

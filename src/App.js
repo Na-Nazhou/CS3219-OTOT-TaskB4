@@ -1,33 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import QuoteTextField from './components/QuoteTextField';
+import { LinearProgress } from '@material-ui/core';
+import QuoteForm from './components/QuoteForm';
 import Layout from './components/Layout';
 import QuoteList from './components/QuoteList';
+import { fetchQuotes, addQuote, editQuote, deleteQuote } from './api';
 
 function App() {
-  const [quotes, setQuotes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [quotes, setQuotes] = useState({});
 
-  // TODO: Link up backend
   useEffect(() => {
-    setQuotes([
-      {
-        id: 1,
-        content: 'Test',
-      },
-    ]);
+    fetchQuotes().then((quoteArr) => {
+      const quotes = {};
+      quoteArr.forEach((quote) => {
+        quotes[quote.id] = quote;
+      });
+      setQuotes(quotes);
+      setIsLoading(false);
+    });
   }, []);
+
+  const handleAddQuote = (content) => {
+    setIsLoading(true);
+    return addQuote(content).then((quote) => {
+      const copy = Object.assign({}, quotes);
+      copy[quote.id] = quote;
+      setQuotes(copy);
+      setIsLoading(false);
+    });
+  };
+
+  const handleEditQuote = (id, newContent) => {
+    setIsLoading(true);
+    return editQuote(id, newContent).then((quote) => {
+      const copy = Object.assign({}, quotes);
+      copy[id] = {
+        id,
+        content: quote.content,
+      };
+      setQuotes(copy);
+      setIsLoading(false);
+    });
+  };
+
+  const handleDeleteQuote = (id) => {
+    setIsLoading(true);
+    return deleteQuote(id).then(() => {
+      const copy = Object.assign({}, quotes);
+      delete copy[id];
+      setQuotes(copy);
+      setIsLoading(false);
+    });
+  };
 
   return (
     <Layout>
-      <QuoteTextField
-        handleSubmit={(content) => console.log(`Add quote ${content}`)}
-        buttonText="Add"
-      />
+      {isLoading && <LinearProgress />}
+      <QuoteForm handleSubmit={handleAddQuote} buttonText="Add" />
       <QuoteList
-        quotes={quotes}
-        editQuote={(id, newContent) =>
-          console.log(`Edit quote ${id} ${newContent}`)
-        }
-        deleteQuote={(id) => console.log(`Delete quote ${id}`)}
+        quotes={Object.values(quotes)}
+        editQuote={handleEditQuote}
+        deleteQuote={handleDeleteQuote}
       />
     </Layout>
   );
