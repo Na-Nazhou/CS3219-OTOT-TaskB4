@@ -1,5 +1,7 @@
 # CS3219 OTOT Task B4
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/cf02c4c4-e6bd-4de0-a03a-0171da7c18e2/deploy-status)](https://app.netlify.com/sites/optimistic-torvalds-a90b90/deploys)
+
 Deployed site: https://optimistic-torvalds-a90b90.netlify.app/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
